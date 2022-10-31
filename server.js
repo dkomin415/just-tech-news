@@ -18,22 +18,23 @@ const sess = {
     db: sequelize
   })
 };
-const routes = require('./controllers');
-const helpers = require('./utils/helpers');
-const hbs = exphbs.create({ helpers });
 
 // session
 app.use(session(sess));
 
-// express middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+const helpers = require('./utils/helpers');
+const hbs = exphbs.create({ helpers });
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
+// express middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+
 // turn on routes
+const routes = require('./controllers');
 app.use(routes);
 
 // turn on connection to db and server
